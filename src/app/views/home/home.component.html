@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col">
+    <tabset #tabs>
+      <tab *ngFor="let company of companies" [heading]="company.name" (select)="selectTab($event)">
+        <ng-container *ngIf="dishOptions">
+          <p *ngFor="let option of dishOptions">{{ option.name }}</p>
+        </ng-container>
+      </tab>
+    </tabset>
+  </div>
+</div>

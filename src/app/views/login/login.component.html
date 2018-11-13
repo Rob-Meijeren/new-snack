@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-12">
+    <h2>Login</h2>
+    <p *ngIf="creationResult">
+      {{ creationResult }}
+    </p>
+    <p>
+      <mat-form-field>
+        <input matInput placeholder="Email" [(ngModel)]="email">
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field>
+        <input type="password" matInput placeholder="Password" [(ngModel)]="password">
+      </mat-form-field>
+    </p>
+    <p>
+      <button mat-raised-button color="secondary" (click)="login()">Login</button>
+    </p>
+  </div>
+</div>
