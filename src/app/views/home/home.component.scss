@@ -1,0 +1,14 @@
+.options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    mat-form-field {
+        margin-top: 30px;
+        max-width: 40%;
+    }
+
+    .option-button {
+        max-width: 200px;
+    }
+}

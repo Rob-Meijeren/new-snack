@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GraphqlService } from './graphql.service';
 import gql from 'graphql-tag';
 import { Company } from '../classes/company';
+import { OptionLevel } from '../classes/option-level';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,29 @@ export class CompanyService {
       });
 
       return companyArray;
+    })
+    .catch(this.handleError);
+  }
+
+  getCompanyOptions(company: string) {
+    return this.graphqlService.readData(gql`
+      query {
+        optionLevels (where: {
+          company: {
+            name: "${company}"
+          }
+        }) {
+          name,
+          level
+        }
+      }
+    `).then((response: any) => {
+      const levels: OptionLevel[] = [];
+      response.data.optionLevels.forEach(element => {
+        levels.push(new OptionLevel(element.name, element.level));
+      });
+
+      return levels;
     })
     .catch(this.handleError);
   }

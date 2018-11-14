@@ -16,14 +16,17 @@ export class DishService {
         company (where: { name: "${companyName}"}) {
           dishoptions {
             option,
-            optionLevel
+            optionLevel {
+              level
+              name
+            }
           }
         }
       }
     `).then((response: any) => {
       const dishoptionsArray: DishOption[] = [];
       response.data.company.dishoptions.forEach(option => {
-        dishoptionsArray.push(new DishOption(option.option, option.optionLevel));
+        dishoptionsArray.push(new DishOption(option.option, option.optionLevel.level));
       });
       return dishoptionsArray;
     })

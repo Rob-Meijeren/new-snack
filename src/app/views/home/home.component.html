@@ -2,9 +2,20 @@
   <div class="col">
     <tabset #tabs>
       <tab *ngFor="let company of companies" [heading]="company.name" (select)="selectTab($event)">
-        <ng-container *ngIf="dishOptions">
-          <p *ngFor="let option of dishOptions">{{ option.name }}</p>
-        </ng-container>
+        <div class="options">
+          <ng-container *ngFor="let optionLevel of companyOptions">
+            <mat-form-field>
+              <mat-select [placeholder]="optionLevel.name">
+                <ng-container *ngFor="let option of dishOptions">
+                    <mat-option *ngIf="option.level === optionLevel.level" [value]="option.name">{{ option.name }}</mat-option>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+            <ng-container *ngFor="let selectedOption of selectedOptions">
+              <p *ngIf="selectedOption.level === optionLevel.level">{{ selectedOption.name }}</p>
+            </ng-container>
+          </ng-container>
+      </div>
       </tab>
     </tabset>
   </div>
