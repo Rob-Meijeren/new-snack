@@ -15,6 +15,7 @@ export class DishService {
       query {
         company (where: { name: "${companyName}"}) {
           dishoptions {
+            id,
             option,
             optionLevel {
               level
@@ -26,7 +27,7 @@ export class DishService {
     `).then((response: any) => {
       const dishoptionsArray: DishOption[] = [];
       response.data.company.dishoptions.forEach(option => {
-        dishoptionsArray.push(new DishOption(option.option, option.optionLevel.level));
+        dishoptionsArray.push(new DishOption(option.id, option.option, option.optionLevel.level));
       });
       return dishoptionsArray;
     })

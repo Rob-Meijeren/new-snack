@@ -3,12 +3,26 @@
     flex-direction: column;
     justify-content: space-between;
 
-    mat-form-field {
-        margin-top: 30px;
-        max-width: 40%;
+    .order-form {
+        mat-form-field {
+            margin-top: 30px;
+            max-width: 40%;
+        }
+
+        .btn-primary {
+            width: 200px;
+            margin-left: 30px;
+        }
     }
 
-    .option-button {
-        max-width: 200px;
+    .selectedOption {
+        display: flex;
+        justify-items: center;
+
+        .icon {
+            color: red;
+            cursor: pointer;
+            margin-left: 20px;
+        }
     }
 }

@@ -38,13 +38,15 @@ export class CompanyService {
           }
         }) {
           name,
-          level
+          level,
+          required,
+          maxAmount
         }
       }
     `).then((response: any) => {
       const levels: OptionLevel[] = [];
       response.data.optionLevels.forEach(element => {
-        levels.push(new OptionLevel(element.name, element.level));
+        levels.push(new OptionLevel(element.name, element.level, element.required, element.maxAmount));
       });
 
       return levels;

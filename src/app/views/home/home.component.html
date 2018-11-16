@@ -2,20 +2,26 @@
   <div class="col">
     <tabset #tabs>
       <tab *ngFor="let company of companies" [heading]="company.name" (select)="selectTab($event)">
-        <div class="options">
-          <ng-container *ngFor="let optionLevel of companyOptions">
-            <mat-form-field>
-              <mat-select [placeholder]="optionLevel.name">
-                <ng-container *ngFor="let option of dishOptions">
-                    <mat-option *ngIf="option.level === optionLevel.level" [value]="option.name">{{ option.name }}</mat-option>
-                </ng-container>
-              </mat-select>
-            </mat-form-field>
-            <ng-container *ngFor="let selectedOption of selectedOptions">
-              <p *ngIf="selectedOption.level === optionLevel.level">{{ selectedOption.name }}</p>
+        <div class="options" [formGroup]="orderForm">
+          <ng-container *ngFor="let optionLevel of optionLevels">
+            <div class="order-form">
+              <mat-form-field>
+                <mat-select [placeholder]="optionLevel.name" [formControlName]="optionLevel.name" [disabled]="getAmountOfSelectedOptionsByLevel(optionLevel.level) >= optionLevel.max">
+                  <ng-container *ngFor="let option of dishOptions">
+                      <mat-option *ngIf="option.level === optionLevel.level" [value]="option.name">{{ option.name }}</mat-option>
+                  </ng-container>
+                </mat-select>
+              </mat-form-field>
+              <button class="btn btn-primary" type="button" (click)="addOption(optionLevel.name)" [disabled]="getAmountOfSelectedOptionsByLevel(optionLevel.level) >= optionLevel.max">Add option to my order</button>
+            </div>
+            <ng-container *ngFor="let option of order">
+              <p *ngIf="option.level === optionLevel.level" class="selectedOption">
+                <span>{{ option.name }}</span><span><i class="material-icons icon" (click)="removeOption(option)">delete</i></span>
+              </p>
             </ng-container>
           </ng-container>
-      </div>
+        </div>
+        <button class="btn btn-primary" type="button" (click)="placeOrder()">Place Order</button>
       </tab>
     </tabset>
   </div>
