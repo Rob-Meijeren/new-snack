@@ -9,6 +9,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { isEqual } from 'lodash';
 import { OrderService } from 'src/app/services/order.service';
 import * as moment from 'moment';
+import { Order } from 'src/app/classes/order';
 
 @Component({
   selector: 'app-home',
@@ -24,19 +25,22 @@ export class HomeComponent implements OnInit {
 
   public order: DishOption[];
   public orderForm: FormGroup;
-  public todaysOrders: any[];
+  public todaysOrders: Order[];
+  public previousOrders: Order[];
 
   constructor(private companyService: CompanyService, private dishService: DishService, private orderService: OrderService) {
+    this.todaysOrders = [];
+    this.orderService.getTodaysOrders(moment().format('YYYY-MM-DD')).then(todaysOrders => {
+      this.todaysOrders = todaysOrders;
+    });
     this.companyService.getCompanies().then((companies) => {
       this.companies = companies;
     }).then(() => {
       this.getCompanyOptions(this.companies[0].name);
-    }).then(() => {
       this.getDishOptions(this.companies[0].name);
     });
     this.orderForm = new FormGroup({});
     this.order = [];
-    this.todaysOrders = [];
   }
 
   ngOnInit() {}
@@ -96,16 +100,22 @@ export class HomeComponent implements OnInit {
 
     let passingDate = null;
 
-    if (fullDate.isAfter(midday, 'hour')) {
+   /*  if (fullDate.isAfter(midday, 'hour')) {
       passingDate = moment().add(1, 'days').format('YYYY-MM-DD');
-    } else {
+    } else { */
       passingDate = moment().format('YYYY-MM-DD');
-    }
+    // }
 
     this.orderService.placeOrder('Rob', passingDate, this.order).then(() => {
-      this.todaysOrders.push(this.order);
+      const todaysOrder = new Order(passingDate, 'Rob', this.order);
+      this.todaysOrders.push(todaysOrder);
       this.order = [];
     });
+  }
+
+  replaceOrder(order: Order) {
+    this.order = order.options;
+    this.placeOrder();
   }
 
 }

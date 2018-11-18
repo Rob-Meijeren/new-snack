@@ -1,5 +1,14 @@
 <div class="row">
-  <div class="col">
+  <div class="col-6">
+    <h3>Today's Orders</h3>
+    <p *ngFor="let order of todaysOrders">
+      <span>{{ order.name }} ordered </span>
+      <span *ngFor="let option of order.options">{{ option.name }} </span>
+      <span class="order-button"><button class="btn btn-primary" type="button" (click)="replaceOrder(order)">Order this</button></span>
+    </p>
+    <p *ngIf="todaysOrders.length === 0">There are no orders yet</p>
+
+    <h3>Create your own order</h3>
     <tabset #tabs>
       <tab *ngFor="let company of companies" [heading]="company.name" (select)="selectTab($event)">
         <div class="options" [formGroup]="orderForm">
@@ -21,8 +30,15 @@
             </ng-container>
           </ng-container>
         </div>
-        <button class="btn btn-primary" type="button" (click)="placeOrder()">Place Order</button>
+        <button class="btn btn-primary" type="button" (click)="placeOrder()" [disabled]="order.length === 0">Place Order</button>
       </tab>
     </tabset>
+  </div>
+  <div class="col-6">
+    <h3>Your previous orders</h3>
+    <p *ngFor="let order of previousOrders">
+      <span>You ordered </span>
+      <span *ngFor="let option of order.options">{{ option.name }} on {{ option.date }}</span>
+    </p>
   </div>
 </div>

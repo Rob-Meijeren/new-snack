@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { GraphqlService } from './graphql.service';
 import gql from 'graphql-tag';
 import { DishOption } from '../classes/dish-option';
+import { Order } from '../classes/order';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,36 @@ export class OrderService {
       }
     `).then((response: any) => {
       return;
+    }).catch(this.handleError);
+  }
+
+  getTodaysOrders(date: string) {
+    return this.graphqlService.readData(gql`
+      query {
+        orders(where: {
+          orderDate: "${date}"
+        }) {
+          name,
+          dishoptions {
+            id,
+            option,
+            optionLevel {
+              level
+            }
+          }
+        }
+      }
+    `).then((response: any) => {
+      const rawOrders = response.data.orders;
+      const parsedOrders: Order[] = [];
+      rawOrders.forEach(element => {
+        const orderOptions: DishOption[] = [];
+        element.dishoptions.forEach(dishoption => {
+          orderOptions.push(new DishOption(dishoption.id, dishoption.option, dishoption.optionLevel.level));
+        });
+        parsedOrders.push(new Order(date, element.name, orderOptions));
+      });
+      return parsedOrders;
     }).catch(this.handleError);
   }
 

@@ -24,19 +24,25 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  createUser(email: string, password: string) {
+  createUser(name: string, email: string, password: string) {
     return this.graphqlService.writeData(gql`
         mutation {
           createUsers(data: {
+            name: "${name}",
             email: "${email}",
             password: "${password}",
+            role: {
+              connect: {
+                id: "cjomyxo0p4e6u093225q1y3dv"
+              }
+            }
             status: PUBLISHED
           }) {
             id
           }
         }
       `).then((response: any) => {
-          return response.data.createUser.id;
+          return response.data.createUsers.id;
       })
       .catch(this.handleError);
   }

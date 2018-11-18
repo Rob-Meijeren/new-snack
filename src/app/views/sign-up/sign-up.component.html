@@ -1,24 +1,20 @@
-<div class='col-md-10 col-md-offset-2'>
-  <form name="loginForm">
-    <div class="form-group">
-      <div class="col-md-3">
-        <input type="text" name="name" [(ngModel)]="name" class="form-control" placeholder="Username" required>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-md-3">
-        <input type="email" name="email" [(ngModel)]="email"  class="form-control" placeholder="Email" required>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-md-3">
-        <input type="password" name="password" [(ngModel)]="password"  class="form-control" placeholder="Password" required>
-      </div>
-    </div>
-    <div class="form-group">
-      <div class="col-md-4">
-        <button class="btn btn-primary" (click)="registerUser()">Sign Up</button>
-      </div>
-    </div>
+<div class='row'>
+  <form [formGroup]="loginForm" class="col loginForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input type="text" matInput formControlName="name">
+      <mat-hint>Required</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email">
+      <mat-hint>Required</mat-hint>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password">
+      <mat-hint>Required. Min 8 characters</mat-hint>
+    </mat-form-field>
+    <button class="btn btn-primary" type="button" (click)="registerUser()" [disabled]="loginForm.invalid">Sign Up</button>
   </form>
 </div>
