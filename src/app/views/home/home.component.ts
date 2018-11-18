@@ -10,6 +10,7 @@ import { isEqual } from 'lodash';
 import { OrderService } from 'src/app/services/order.service';
 import * as moment from 'moment';
 import { Order } from 'src/app/classes/order';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,7 @@ export class HomeComponent implements OnInit {
   public todaysOrders: Order[];
   public previousOrders: Order[];
 
-  constructor(private companyService: CompanyService, private dishService: DishService, private orderService: OrderService) {
+  constructor(private companyService: CompanyService, private dishService: DishService, private orderService: OrderService, private userService: UserService) {
     this.todaysOrders = [];
     this.orderService.getTodaysOrders(moment().format('YYYY-MM-DD')).then(todaysOrders => {
       this.todaysOrders = todaysOrders;
@@ -41,6 +42,9 @@ export class HomeComponent implements OnInit {
     });
     this.orderForm = new FormGroup({});
     this.order = [];
+    if (this.userService.isLoggedIn()) {
+      console.log('Hey You are logged in :)');
+    }
   }
 
   ngOnInit() {}

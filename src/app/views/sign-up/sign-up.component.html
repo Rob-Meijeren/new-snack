@@ -1,5 +1,5 @@
 <div class='row'>
-  <form [formGroup]="loginForm" class="col loginForm">
+  <form [formGroup]="signupForm" class="col signupForm">
     <mat-form-field appearance="outline">
       <mat-label>Name</mat-label>
       <input type="text" matInput formControlName="name">
@@ -15,6 +15,6 @@
       <input type="password" matInput formControlName="password">
       <mat-hint>Required. Min 8 characters</mat-hint>
     </mat-form-field>
-    <button class="btn btn-primary" type="button" (click)="registerUser()" [disabled]="loginForm.invalid">Sign Up</button>
+    <button class="btn btn-primary" type="button" (click)="registerUser()" [disabled]="signupForm.invalid">Sign Up</button>
   </form>
 </div>

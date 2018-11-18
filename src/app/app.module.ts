@@ -20,6 +20,8 @@ import { SignUpComponent } from './views/sign-up/sign-up.component';
 import { AccountComponent } from './views/account/account.component';
 import { LoginComponent } from './views/login/login.component';
 
+import { CookieService } from 'ngx-cookie-service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +47,9 @@ import { LoginComponent } from './views/login/login.component';
     MatSelectModule,
     TabsModule.forRoot(),
   ],
-  providers: [],
+  providers: [
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'account', component: AccountComponent, canActivate: [LoggedInGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'createUser', component: SignUpComponent },
+  { path: 'createUser', component: SignUpComponent, canActivate: [LoggedInGuard] },
   { path: '*', redirectTo: '', pathMatch: 'full' }
 ];
 

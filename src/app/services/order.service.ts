@@ -3,6 +3,7 @@ import { GraphqlService } from './graphql.service';
 import gql from 'graphql-tag';
 import { DishOption } from '../classes/dish-option';
 import { Order } from '../classes/order';
+import { User } from '../classes/user';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,10 @@ export class OrderService {
       });
       return parsedOrders;
     }).catch(this.handleError);
+  }
+
+  getOrdersOfUser(user: User) {
+    // still needs to implemented in the data structure
   }
 
   private handleError(error: any): Promise<any> {
