@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AppRoutingModule } from './app-routing.module';
 import { TabsModule } from 'ngx-bootstrap/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './views/home/home.component';
@@ -21,6 +22,7 @@ import { AccountComponent } from './views/account/account.component';
 import { LoginComponent } from './views/login/login.component';
 
 import { CookieService } from 'ngx-cookie-service';
+import { NameDialogComponent } from './components/name-dialog/name-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { CookieService } from 'ngx-cookie-service';
     HomeComponent,
     LoginComponent,
     AccountComponent,
-    SignUpComponent
+    SignUpComponent,
+    NameDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -46,9 +49,13 @@ import { CookieService } from 'ngx-cookie-service';
     MatInputModule,
     MatSelectModule,
     TabsModule.forRoot(),
+    MatDialogModule,
   ],
   providers: [
     CookieService
+  ],
+  entryComponents: [
+    NameDialogComponent
   ],
   bootstrap: [AppComponent]
 })

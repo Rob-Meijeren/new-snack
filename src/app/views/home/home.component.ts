@@ -11,6 +11,8 @@ import { OrderService } from 'src/app/services/order.service';
 import * as moment from 'moment';
 import { Order } from 'src/app/classes/order';
 import { UserService } from 'src/app/services/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { NameDialogComponent } from 'src/app/components/name-dialog/name-dialog.component';
 
 @Component({
   selector: 'app-home',
@@ -27,10 +29,16 @@ export class HomeComponent implements OnInit {
   public order: DishOption[];
   public orderForm: FormGroup;
   public todaysOrders: Order[];
-  public previousOrders: Order[];
+  public storedOrders: Order[];
 
-  constructor(private companyService: CompanyService, private dishService: DishService, private orderService: OrderService, private userService: UserService) {
+  constructor(
+    private dialog: MatDialog,
+    private companyService: CompanyService,
+    private dishService: DishService,
+    private orderService: OrderService,
+    private userService: UserService) {
     this.todaysOrders = [];
+    this.storedOrders = [];
     this.orderService.getTodaysOrders(moment().format('YYYY-MM-DD')).then(todaysOrders => {
       this.todaysOrders = todaysOrders;
     });
@@ -39,6 +47,7 @@ export class HomeComponent implements OnInit {
     }).then(() => {
       this.getCompanyOptions(this.companies[0].name);
       this.getDishOptions(this.companies[0].name);
+      this.getStoredOrders();
     });
     this.orderForm = new FormGroup({});
     this.order = [];
@@ -98,7 +107,7 @@ export class HomeComponent implements OnInit {
     return optionsByLevel.length;
   }
 
-  placeOrder() {
+  createOrder() {
     const fullDate = moment();
     const midday = moment('12:00', 'HH:mm');
 
@@ -110,16 +119,41 @@ export class HomeComponent implements OnInit {
       passingDate = moment().format('YYYY-MM-DD');
     // }
 
-    this.orderService.placeOrder('Rob', passingDate, this.order).then(() => {
-      const todaysOrder = new Order(passingDate, 'Rob', this.order);
+    if (this.userService.isLoggedIn()) {
+      this.placeOrder(this.userService.getUser().value.name, passingDate, this.userService.getUser().value.id);
+    } else {
+      const dialogRef = this.dialog.open(NameDialogComponent);
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.placeOrder(result, passingDate);
+        }
+      });
+    }
+  }
+
+  placeOrder(userName: string, passingDate: string, userId?: string) {
+    this.orderService.placeOrder(userName, passingDate, this.order, userId).then(() => {
+      const todaysOrder = new Order(passingDate, userName, this.order);
       this.todaysOrders.push(todaysOrder);
+      this.storedOrders.push(todaysOrder);
       this.order = [];
     });
   }
 
   replaceOrder(order: Order) {
     this.order = order.options;
-    this.placeOrder();
+    this.createOrder();
+  }
+
+  getStoredOrders() {
+    if (this.userService.isLoggedIn()) {
+      this.orderService.getOrdersOfUser(this.userService.getUser().value).then((orders: Order[]) => {
+        this.storedOrders = orders;
+      });
+    } else {
+      this.storedOrders = JSON.parse(localStorage.getItem('storedOrders'));
+    }
   }
 
 }

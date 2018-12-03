@@ -21,6 +21,7 @@ export class UserService {
           users(where: {
             email: "${email}"
           }) {
+            id,
             name,
             password,
             role {
@@ -30,7 +31,7 @@ export class UserService {
         }
       `).then((response: any) => {
         if (bcrypt.compareSync(password, response.data.users.password)) {
-          const user = new User(response.data.users.name, email, response.data.users.role.name);
+          const user = new User(response.data.users.id, response.data.users.name, email, response.data.users.role.name);
           this.user.next(user);
           this.cookieService.set('user', JSON.stringify(user),  moment().add(1, 'days').toDate(), '/');
           return true;
