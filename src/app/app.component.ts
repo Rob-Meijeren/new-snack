@@ -3,6 +3,10 @@ import { UserService } from './services/user.service';
 import { User } from './classes/user';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { OrderService } from './services/order.service';
+import * as moment from 'moment';
+import { Order } from './classes/order';
+import { ExcelService } from './services/excel.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   user: User;
   private stop$ = new Subject<void>();
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private orderService: OrderService, private excelService: ExcelService) {}
 
   ngOnInit() {
     this.userIsLoggedIn = this.userService.isLoggedIn();
@@ -37,5 +41,15 @@ export class AppComponent implements OnInit, OnDestroy {
   logout() {
     this.userService.logout();
     this.userIsLoggedIn = false;
+  }
+
+  downloadOrders() {
+    this.orderService.getOrdersWithCompanyNameByDate(moment().format('YYYY-MM-DD')).then((todaysOrders: any[]) => {
+      if (todaysOrders.length > 0) {
+        this.excelService.downloadOrdersAsExcel(todaysOrders);
+      } else {
+        alert('There are no orders for today');
+      }
+    });
   }
 }

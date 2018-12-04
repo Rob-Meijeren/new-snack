@@ -145,6 +145,36 @@ export class OrderService {
     }).catch(this.handleError);
   }
 
+  public getOrdersWithCompanyNameByDate(date: string) {
+    return this.graphqlService.readData(gql`
+      query {
+        orders(where: {
+          orderDate: "${date}"
+        }) {
+          name,
+          orderDate,
+          dishoptions {
+            option,
+            company {
+              name
+            }
+          }
+        }
+      }
+    `).then((response: any) => {
+      const rawOrders = response.data.orders;
+      const parsedOrders: any[] = [];
+      rawOrders.forEach(element => {
+        const options: any[] = element.dishoptions.map((option) => {
+          return { name: option.option, company: option.company.name };
+        });
+        const order = { name: element.name, options };
+        parsedOrders.push(order);
+      });
+      return parsedOrders;
+    }).catch(this.handleError);
+  }
+
   private createOrder(element) {
     const orderOptions: DishOption[] = [];
     element.dishoptions.forEach(dishoption => {

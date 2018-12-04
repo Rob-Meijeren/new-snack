@@ -51,9 +51,6 @@ export class HomeComponent implements OnInit {
     });
     this.orderForm = new FormGroup({});
     this.order = [];
-    if (this.userService.isLoggedIn()) {
-      console.log('Hey You are logged in :)');
-    }
   }
 
   ngOnInit() {}
