@@ -89,6 +89,27 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  public changePassword(user: User, new_password: string) {
+    const salt = bcrypt.genSaltSync(10);
+    const encryptedPassword = bcrypt.hashSync(new_password, salt);
+
+    return this.graphqlService.writeData(gql`
+      mutation {
+        updateUsers(where: {
+          email: "${user.email}"
+        },
+        data: {
+          password: "${encryptedPassword}"
+        }) {
+          id
+        }
+      }
+    `).then((response: any) => {
+        return response.data.updateUsers.id;
+    })
+    .catch(this.handleError);
+  }
+
   private handleError(error: any): Promise<any> {
     return Promise.reject(error.message || error);
   }

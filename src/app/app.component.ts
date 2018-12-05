@@ -1,11 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from './services/user.service';
 import { User } from './classes/user';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { OrderService } from './services/order.service';
 import * as moment from 'moment';
-import { Order } from './classes/order';
 import { ExcelService } from './services/excel.service';
 
 @Component({
@@ -13,17 +10,16 @@ import { ExcelService } from './services/excel.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   userIsLoggedIn: boolean;
   user: User;
-  private stop$ = new Subject<void>();
 
   constructor(private userService: UserService, private orderService: OrderService, private excelService: ExcelService) {}
 
   ngOnInit() {
     this.userIsLoggedIn = this.userService.isLoggedIn();
     if (this.userIsLoggedIn) {
-      this.userService.getUser().pipe(takeUntil(this.stop$)).subscribe((user: User) => {
+      this.userService.getUser().subscribe((user: User) => {
         this.user = user;
         if (this.user) {
           this.userIsLoggedIn = true;
@@ -32,10 +28,6 @@ export class AppComponent implements OnInit, OnDestroy {
         }
       });
     }
-  }
-
-  ngOnDestroy() {
-    this.stop$.next();
   }
 
   logout() {

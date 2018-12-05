@@ -3,17 +3,20 @@
     <div class="col">
       <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" routerLink="/">New Snack</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarContent">
+        <div class="collapse navbar-collapse">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item"><a class="nav-link" routerLink="/">Home</a></li>
-            <li class="nav-item" *ngIf="!userIsLoggedIn"><a class="nav-link" routerLink="login">/ Login</a></li>
-            <li class="nav-item" *ngIf="userIsLoggedIn && user.role === 'administrator'"><a class="nav-link" routerLink="createUser">/ Create User</a></li>
-            <li class="nav-item" *ngIf="userIsLoggedIn && user.role === 'administrator'"><a class="nav-link" (click)="downloadOrders()">/ Download Today's Orders</a></li>
-            <li class="nav-item" *ngIf="userIsLoggedIn"><a class="nav-link" (click)="logout()">/ Logout</a></li>
+            <li class="nav-item" *ngIf="!userIsLoggedIn"><a class="nav-link" routerLink="login">Login</a></li>
+            <ng-container *ngIf="userIsLoggedIn">
+              <li class="nav-item"><a class="nav-link" routerLink="account">Account</a></li>
+              <li class="nav-item" *ngIf="user.role === 'administrator'"><a class="nav-link" routerLink="createUser">Create User</a></li>
+              <li class="nav-item" *ngIf="user.role === 'administrator'"><a class="nav-link" (click)="downloadOrders()">Download Today's Orders</a></li>
+              <li class="nav-item"><a class="nav-link" (click)="logout()">Logout</a></li>
+            </ng-container>
           </ul>
         </div>
       </nav>

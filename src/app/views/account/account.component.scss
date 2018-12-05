@@ -1,0 +1,9 @@
+.row {
+    display: flex;
+    flex-direction: column;
+
+    .btn-primary {
+        max-width: 200px;
+        margin-left: 15px;
+    }
+}

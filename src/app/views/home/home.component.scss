@@ -30,3 +30,20 @@
 .order-button {
     float: right;
 }
+
+@media only screen and (max-width: 450px) {
+    .options {
+        .order-form {
+            mat-form-field {
+                max-width: 100%;
+            }
+    
+            .btn-primary {
+                margin-left: 0px;
+            }
+        }
+    }
+    .place-order {
+        margin-top: 20px;
+    }
+}

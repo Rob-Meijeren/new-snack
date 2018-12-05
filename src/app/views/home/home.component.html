@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-6">
+  <div [class.col-6]="storedOrders" [class.col-12]="!storedOrders">
     <h3>Today's Orders</h3>
     <p *ngFor="let order of todaysOrders">
       <span>{{ order.name }} ordered </span>
@@ -30,7 +30,7 @@
             </ng-container>
           </ng-container>
         </div>
-        <button class="btn btn-primary" type="button" (click)="createOrder()" [disabled]="order.length === 0">Place Order</button>
+        <button class="btn btn-primary place-order" type="button" (click)="createOrder()" [disabled]="order.length === 0">Place Order</button>
       </tab>
     </tabset>
   </div>

@@ -1,43 +1,18 @@
-<div class='col-md-10 col-md-offset-2' *ngIf="account">
-  <h3>Account</h3>
-  <form name="accountForm">
-    <div class="row">
-      <fieldset>
-        <div class='col-md-5'>
-          <div class='form-group'>
-            <label>Uw naam</label>
-            <input name="name" [(ngModel)]='account.name' class='form-control black' />
-          </div>
-          <div class='form-group'>
-            <label>Email</label>
-            <input name="email" [(ngModel)]='account.email' class='form-control black' />
-          </div>
-        </div>
-      </fieldset>
-      <button class="btn btn-primary" (click)="updateAccount()">Update account</button>
+<div class='col-12'>
+  <div class='row'>
+    <h3>Wachtwoord veranderen</h3>
+    <div class='col-5' [formGroup]="passwordGroup">
+      <mat-form-field appearance="outline">
+        <mat-label>New password</mat-label>
+        <input type="password" matInput formControlName="new_password" required>
+        <mat-error>Please enter your new password</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Confirm password</mat-label>
+        <input type="password" matInput formControlName="confirm_password" required [errorStateMatcher]="matcher">
+        <mat-error *ngIf="passwordGroup.get('confirm_password').hasError('MatchPassword')">Passwords do not match</mat-error>
+      </mat-form-field>
     </div>
-  </form>
-  <h3>Wachtwoord veranderen</h3>
-  <form>
-    <div class='row'>
-      <fieldset>
-        <div class='col-md-5'>
-          <div class='form-group'>
-            <label>Huidig wachtwoord</label> *
-            <input type='password' name="oldPassword" [(ngModel)]="oldPassword" class='form-control black' required />
-          </div>
-          <div class='form-group'>
-            <label>Nieuw wachtwoord</label> *
-            <input type='password' name="password" [(ngModel)]="password" class='form-control black' required />
-          </div>
-          <div class='form-group'>
-            <label>Nieuw wachtwoord bevestigen</label> *
-            <input type='password' name="confirmPassword" [(ngModel)]="confirmPassword" class='form-control black' required/>
-            <span *ngIf="passwordMismatch">De wachtwoorden komen niet overeen</span>
-          </div>
-        </div>
-      </fieldset>
-      <button class="btn btn-primary" (click)="changePassword()">Verander wachtwoord</button>
-    </div>
-  </form>
+    <button class="btn btn-primary" (click)="changePassword()" [disabled]="passwordGroup.invalid">Change password</button>
+  </div>
 </div>
