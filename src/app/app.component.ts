@@ -18,16 +18,15 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.userIsLoggedIn = this.userService.isLoggedIn();
-    if (this.userIsLoggedIn) {
-      this.userService.getUser().subscribe((user: User) => {
-        this.user = user;
-        if (this.user) {
-          this.userIsLoggedIn = true;
-        } else {
-          this.userIsLoggedIn = false;
-        }
-      });
-    }
+    this.userService.getUser().subscribe((user: User) => {
+      console.log('subscription');
+      this.user = user;
+      if (this.user) {
+        this.userIsLoggedIn = true;
+      } else {
+        this.userIsLoggedIn = false;
+      }
+    });
   }
 
   logout() {

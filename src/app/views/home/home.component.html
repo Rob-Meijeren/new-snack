@@ -1,5 +1,5 @@
 <div class="row">
-  <div [class.col-6]="storedOrders" [class.col-12]="!storedOrders">
+  <div class="col-sm-12" [class.col-md-6]="storedOrders" [class.col-md-12]="!storedOrders">
     <h3>Today's Orders</h3>
     <p *ngFor="let order of todaysOrders">
       <span>{{ order.name }} ordered </span>
@@ -34,7 +34,7 @@
       </tab>
     </tabset>
   </div>
-  <div class="col-6" *ngIf="storedOrders">
+  <div class="col-md-6 col-sm-12" *ngIf="storedOrders">
     <h3>Your previous orders</h3>
     <div *ngFor="let order of storedOrders">
       <p>You ordered on {{ order.date | date: "dd-MM-yyyy" }}</p>
